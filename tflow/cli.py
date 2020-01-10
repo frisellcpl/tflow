@@ -14,6 +14,12 @@ args = [
         data_type='int',
         required=True,
     ),
+    Arg(
+        name='production',
+        data_type='bool',
+        required=False,
+        default=False,
+    ),
 ]
 
 
@@ -38,6 +44,7 @@ def main():
 
     name = parsed_args['name']
     version = parsed_args['version']
+    production = parsed_args['production']
     
     # render CI file
     from .render import render
@@ -49,6 +56,7 @@ def main():
     import subprocess
     # git tag current commit with version, then push.
     subprocess.run(['git', 'tag', str(version)])
+    subprocess.run(['git', 'push', 'origin', 'master' if production else 'develop'])
     subprocess.run(['git', 'push', '--tags'])
     
     sys.exit(0)
