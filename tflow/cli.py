@@ -55,6 +55,8 @@ def main():
 
     import subprocess
     # git tag current commit with version, then push.
+    subprocess.run(['git', 'commit', '.gitlab-ci.yml',
+                    '-m', 'Bumped modelversion to {v}'.format(v=version)])
     subprocess.run(['git', 'tag', str(version)])
     subprocess.run(['git', 'push', 'origin', 'master' if production else 'develop'])
     subprocess.run(['git', 'push', '--tags'])

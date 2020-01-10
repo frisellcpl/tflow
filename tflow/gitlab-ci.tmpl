@@ -13,7 +13,7 @@ build_runner_stage:
     - docker build --pull -t $STAGE_IMAGE_TAG .
     - docker push $STAGE_IMAGE_TAG
   only:
-  - master
+  - develop
 
 deploy_runner_staging:
   stage: deploy
@@ -21,8 +21,6 @@ deploy_runner_staging:
   environment:
     name: stage
   script:
-    # The actual input params could be read from a file to simplify things.
     - nomad_run.sh -j ${mlflow_model_name} -v ${mlflow_model_version} -e stage -U $TRACKER_USERNAME -P $TRACKER_PASSWORD
-  when: manual
   only:
-  - master
+  - develop
